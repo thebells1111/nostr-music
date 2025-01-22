@@ -12,4 +12,4 @@
   }
 </script>
 
-<button on:click={fetchItems}>Fetch Itemss</button>
+<button on:click={fetchItems}>Fetch Items</button>

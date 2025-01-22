@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import { WindowNostr } from "nostr-tools/nip07";
   import serialFetchById from "$lib/functions/serialFetchById";
   import GetItems from "$lib/main/GetItems.svelte";
   import PublishSongs from "$lib/main/PublishSongs.svelte";
@@ -29,12 +30,32 @@
     nostrAvailable = !!window.nostr;
     if (!nostrAvailable) {
       error = "Nostr extension (e.g., Alby) not found.";
+      window.nostr = WindowNostr;
     } else {
       publicKey = await window.nostr.getPublicKey();
     }
 
     // ws = websocketClient(relayUrls[0]);
   });
+
+  function connect() {
+    window.wnjParams = {
+      position: "bottom",
+      // The only accepted value is 'bottom', default is top
+      accent: "green",
+      // Supported values: cyan (default), green, purple, red, orange, neutral, stone
+      startHidden: true,
+      // If the host page has a button that call `getPublicKey` to start a
+      // login procedure, the minimized widget can be hidden until connected
+      compactMode: true,
+      // Show the minimized widget in a compact form
+      disableOverflowFix: true,
+      // If the host page on mobile has an horizontal scrolling, the floating
+      // element/modal are pushed to the extreme right/bottom and exit the
+      // viewport. A style is injected in the html/body elements fix this.
+      // This option permit to disable this default behavior
+    };
+  }
 </script>
 
 <main>
@@ -59,6 +80,8 @@
     <FetchItemsByFeedUrl {relayUrls} />
     <GetItems bind:feed bind:feedUrl bind:episodesTemplate />
     <PublishSongs bind:feed bind:feedUrl bind:episodesTemplate {relayUrls} />
+  {:else}
+    <button on:click={connect}>Connect</button>
   {/if}
 </main>
 
