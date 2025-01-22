@@ -11,6 +11,7 @@
   let error = "";
   let nostrAvailable = false;
   let ws;
+  let show;
 
   // Define the relays you want to connect to
   const relayUrls = [
@@ -25,37 +26,16 @@
   let feed = {};
   let episodesTemplate = [];
 
+  let showNostrFallback = false;
   onMount(async () => {
     // Check if NIP-07 (window.nostr) is available
     nostrAvailable = !!window.nostr;
     if (!nostrAvailable) {
-      error = "Nostr extension (e.g., Alby) not found.";
-      window.nostr = WindowNostr;
+      showNostrFallback = true;
     } else {
       publicKey = await window.nostr.getPublicKey();
     }
-
-    // ws = websocketClient(relayUrls[0]);
   });
-
-  function connect() {
-    window.wnjParams = {
-      position: "bottom",
-      // The only accepted value is 'bottom', default is top
-      accent: "green",
-      // Supported values: cyan (default), green, purple, red, orange, neutral, stone
-      startHidden: true,
-      // If the host page has a button that call `getPublicKey` to start a
-      // login procedure, the minimized widget can be hidden until connected
-      compactMode: true,
-      // Show the minimized widget in a compact form
-      disableOverflowFix: true,
-      // If the host page on mobile has an horizontal scrolling, the floating
-      // element/modal are pushed to the extreme right/bottom and exit the
-      // viewport. A style is injected in the html/body elements fix this.
-      // This option permit to disable this default behavior
-    };
-  }
 </script>
 
 <main>
