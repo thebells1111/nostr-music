@@ -2,22 +2,18 @@ import { NostrRelay, createOutgoingNoticeMessage } from "@nostr-relay/core";
 import { EventRepositorySqlite } from "@nostr-relay/event-repository-sqlite";
 import { Validator } from "@nostr-relay/validator";
 import path from "path";
+import { fileURLToPath } from "url";
 import { program } from "commander";
 import { WebSocketServer } from "ws";
 import { RequestLogger } from "./request-logger.js";
 import { checkDatabaseRoute } from "./utils/index.js";
 
-// Get the current directory using import.meta.url and normalize the path
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+// Convert import.meta.url to __dirname
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Convert to a valid Windows path, remove any leading slashes that can cause issues
-const normalizedDirname = __dirname.startsWith("/")
-  ? __dirname.substring(1)
-  : __dirname;
-
-// Ensure it’s a proper absolute path
-const DEFAULT_DB_FILE = path.join(normalizedDirname, "db", "db");
-const DEFAULT_LOGS_DIRECTORY = path.join(normalizedDirname, "logs");
+// Define platform-independent paths
+const DEFAULT_DB_FILE = path.resolve(__dirname, "db", "db");
+const DEFAULT_LOGS_DIRECTORY = path.resolve(__dirname, "logs");
 
 checkDatabaseRoute(DEFAULT_DB_FILE);
 
@@ -41,6 +37,7 @@ async function bootstrap(options = {}) {
 
     ws.on("message", async (data) => {
       try {
+        console.log(data);
         const message = await validator.validateIncomingMessage(data);
         console.log(message);
         await relay.handleMessage(ws, message);
@@ -62,7 +59,7 @@ async function bootstrap(options = {}) {
 db file:  ${file}
 logs dir: ${DEFAULT_LOGS_DIRECTORY}
 
-Now you can use your "Nostr App"to connect to this relay.
+Now you can use your "Nostr App" to connect to this relay.
 
 ws://localhost:${port}
 `);
@@ -70,7 +67,7 @@ ws://localhost:${port}
 
 program
   .name("nostr-relay-sqlite")
-  .description("a Nostr relay server using SQLite as a database");
+  .description("A Nostr relay server using SQLite as a database");
 
 program
   .option("-p, --port <port>", "Port to listen on")
@@ -80,4 +77,4 @@ program.parse();
 
 const options = program.opts();
 
-bootstrap();
+bootstrap(options);

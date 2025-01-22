@@ -26,16 +26,17 @@
           kind: 33333,
           created_at: Math.floor(Date.now() / 1000),
           tags: [
-            ["feed_guid", feedGuid],
-            ["feed_url", feedUrl],
+            ["fg", feedGuid],
+            ["f", feedUrl],
             ["author", author],
-            ["item_guid", itemGuid],
+            ["i", itemGuid],
             ["feed_title", feedTitle],
             ["item_title", itemTitle],
             ["img_src", imgSrc],
             ["media_src", mediaSrc],
+            ["d", btoa(feedUrl + itemGuid)],
           ],
-          content: `${feedTitle} ${itemTitle}\n${imgSrc}\n${mediaSrc}`,
+          content: `${itemTitle} by ${author}\n${imgSrc}\n${mediaSrc}`,
         };
 
         console.log(eventTemplate);
@@ -43,6 +44,7 @@
         events.push(signedEvent);
         await serialPublishEvent(relayUrls, signedEvent);
       }
+      console.log(events);
     } catch (err) {
       console.log(err.message);
     }

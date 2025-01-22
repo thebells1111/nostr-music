@@ -3,10 +3,13 @@
   import serialFetchById from "$lib/functions/serialFetchById";
   import GetItems from "$lib/main/GetItems.svelte";
   import PublishSongs from "$lib/main/PublishSongs.svelte";
+  import FetchItemsByFeedUrl from "$lib/main/FetchItemsByFeedUrl.svelte";
+  import websocketClient from "$lib/functions/websocketClient";
 
   let publicKey = "";
   let error = "";
   let nostrAvailable = false;
+  let ws;
 
   // Define the relays you want to connect to
   const relayUrls = [
@@ -29,6 +32,8 @@
     } else {
       publicKey = await window.nostr.getPublicKey();
     }
+
+    // ws = websocketClient(relayUrls[0]);
   });
 </script>
 
@@ -44,15 +49,14 @@
   {/if}
 
   {#if nostrAvailable}
-    <button
-      on:click={serialFetchById.bind(
-        this,
-        "bfa24f2bcd37f02d5cfe0aad5b1ed7739be4327444e90a5076320812d1c8dc97",
-        "23103189356cf7c8bc09bb8b431fc3e71e85582c8f755b9ee160203c9c19e403",
-        relayUrls
-      )}>Fetch</button
-    >
-
+    <!-- <button
+      on:click={() => {
+        ws.send(
+          JSON.stringify(["REQ", "sub:1", { kinds: [33333], "#f": ["abcd"] }])
+        );
+      }}>Fetch</button
+    > -->
+    <FetchItemsByFeedUrl {relayUrls} />
     <GetItems bind:feed bind:feedUrl bind:episodesTemplate />
     <PublishSongs bind:feed bind:feedUrl bind:episodesTemplate {relayUrls} />
   {/if}

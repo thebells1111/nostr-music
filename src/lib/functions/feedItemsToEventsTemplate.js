@@ -4,7 +4,7 @@ async function feedItemsToEventsTemplate(feedUrl) {
   let feed = await fetchRSSFeed(feedUrl);
 
   let episodesTemplate = feed?.item
-    ?.map((item) => {
+    ?.map((item, i) => {
       return {
         feedGuid: feed?.["podcast:guid"],
         feedUrl,
@@ -12,6 +12,7 @@ async function feedItemsToEventsTemplate(feedUrl) {
         itemGuid: item?.guid?.["#text"] || item?.guid,
         feedTitle: feed?.title,
         itemTitle: item?.title,
+        track: i + 1,
         imgSrc:
           item?.["itunes:image"]?.["@_href"] ||
           item?.image?.url ||
