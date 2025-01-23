@@ -17,6 +17,7 @@
   let nsecInput = "";
   let errorMessage = "";
   let ws;
+  let songs = [];
 
   // Define the relays you want to connect to
   const relayUrls = [
@@ -53,6 +54,8 @@
         } else {
           throw new Error("Invalid private key format.");
         }
+        // Store the nsec in session storage
+        sessionStorage.setItem("nsec", inputKey);
         // Derive and return the public key for verification
         return getPublicKey(this.privateKey);
       } catch (error) {
@@ -60,6 +63,23 @@
       }
     },
   };
+
+  // Custom fallback nostr object
+
+  // On mount, check for Nostr support and retrieve session nsec
+
+  // Handle manual fallback setup
+  async function initializeNostrFallback() {
+    try {
+      const derivedPublicKey = nostrFallback.setPrivateKey(nsecInput);
+      window.nostr = nostrFallback; // Attach fallback to window.nostr
+      publicKey = derivedPublicKey; // Display derived public key
+      showNostrFallback = false; // Hide the fallback input
+      errorMessage = "";
+    } catch (error) {
+      errorMessage = error.message;
+    }
+  }
 
   let feedUrl =
     "https://raw.githubusercontent.com/thebells1111/bible-song-band/refs/heads/main/feed.xml";
@@ -76,18 +96,27 @@
     }
   });
 
-  // Handle manual fallback setup
-  async function initializeNostrFallback() {
-    try {
-      const derivedPublicKey = nostrFallback.setPrivateKey(nsecInput);
-      window.nostr = nostrFallback; // Attach fallback to window.nostr
-      publicKey = derivedPublicKey; // Display derived public key
-      showNostrFallback = false; // Hide the fallback input
-      errorMessage = "";
-    } catch (error) {
-      errorMessage = error.message;
+  onMount(async () => {
+    const storedNsec = sessionStorage.getItem("nsec");
+
+    if (storedNsec) {
+      try {
+        // Use the stored nsec to initialize the fallback
+        const derivedPublicKey = nostrFallback.setPrivateKey(storedNsec);
+        window.nostr = nostrFallback; // Attach fallback to window.nostr
+        publicKey = derivedPublicKey; // Display the derived public key
+        showNostrFallback = false; // No need for fallback input
+      } catch (error) {
+        console.error("Invalid stored nsec:", error.message);
+        sessionStorage.removeItem("nsec"); // Clear invalid stored key
+        showNostrFallback = true;
+      }
+    } else if (window.nostr) {
+      showNostrFallback = true;
+    } else {
+      publicKey = await window.nostr.getPublicKey();
     }
-  }
+  });
 </script>
 
 <main>
@@ -121,7 +150,13 @@
     > -->
     <FetchItemsByFeedUrl {relayUrls} />
     <GetItems bind:feed bind:feedUrl bind:episodesTemplate />
-    <PublishSongs bind:feed bind:feedUrl bind:episodesTemplate {relayUrls} />
+    <PublishSongs
+      bind:feed
+      bind:feedUrl
+      bind:episodesTemplate
+      {relayUrls}
+      bind:songs
+    />
   {/if}
 </main>
 
@@ -136,13 +171,5 @@
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
-  }
-  pre {
-    background: #f4f4f4;
-    padding: 10px;
-    border-radius: 5px;
-    text-align: left;
-    max-height: 300px;
-    overflow-y: auto;
   }
 </style>
