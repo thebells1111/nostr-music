@@ -18,7 +18,7 @@ async function serialFetchItemsByFeedUrl(feedUrl, relayUrls) {
           [
             {
               kinds: [33333],
-              "#f": [feedUrl],
+              "#u": [feedUrl],
             },
           ],
           {

@@ -26,8 +26,8 @@
           kind: 33333,
           created_at: Math.floor(Date.now() / 1000),
           tags: [
-            ["fg", feedGuid],
-            ["f", feedUrl],
+            ["g", feedGuid],
+            ["u", feedUrl],
             ["author", author],
             ["i", itemGuid],
             ["feed_title", feedTitle],
