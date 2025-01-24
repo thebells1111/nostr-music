@@ -8,8 +8,10 @@
   } from "nostr-tools";
   import serialFetchById from "$lib/functions/serialFetchById";
   import GetItems from "$lib/main/GetItems.svelte";
+  import PublishAlbum from "$lib/main/PublishAlbum.svelte";
   import PublishSongs from "$lib/main/PublishSongs.svelte";
   import FetchItemsByFeedUrl from "$lib/main/FetchItemsByFeedUrl.svelte";
+  import FetchSong from "$lib/main/FetchSong.svelte";
   import websocketClient from "$lib/functions/websocketClient";
 
   let showNostrFallback = false;
@@ -87,16 +89,6 @@
   let episodesTemplate = [];
 
   onMount(async () => {
-    // Check if NIP-07 (window.nostr) is available
-
-    if (!window.nostr) {
-      showNostrFallback = true;
-    } else {
-      publicKey = await window.nostr.getPublicKey();
-    }
-  });
-
-  onMount(async () => {
     const storedNsec = sessionStorage.getItem("nsec");
 
     if (storedNsec) {
@@ -111,7 +103,7 @@
         sessionStorage.removeItem("nsec"); // Clear invalid stored key
         showNostrFallback = true;
       }
-    } else if (window.nostr) {
+    } else if (!window.nostr) {
       showNostrFallback = true;
     } else {
       publicKey = await window.nostr.getPublicKey();
@@ -148,6 +140,7 @@
         );
       }}>Fetch</button
     > -->
+    <FetchSong {relayUrls} />
     <FetchItemsByFeedUrl {relayUrls} />
     <GetItems bind:feed bind:feedUrl bind:episodesTemplate />
     <PublishSongs
@@ -157,6 +150,7 @@
       {relayUrls}
       bind:songs
     />
+    <PublishAlbum bind:feed bind:feedUrl bind:songs {relayUrls} />
   {/if}
 </main>
 

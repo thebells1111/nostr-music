@@ -15,5 +15,5 @@
   }
 </script>
 
-<button on:click={getItems}>Get Songs</button>
 <input placeholder="link to feed" type="url" bind:value={feedUrl} />
+<button on:click={getItems}>Get Songs</button>
