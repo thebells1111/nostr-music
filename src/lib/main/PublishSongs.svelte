@@ -23,14 +23,15 @@
           mediaSrc,
         } = event;
 
+        //nip73
         const eventTemplate = {
           kind: 33333,
           created_at: Math.floor(Date.now() / 1000),
           tags: [
-            ["g", feedGuid],
-            ["u", feedUrl],
+            ["i", `podcast:guid: ${feedGuid}`],
+            ["i", `url: ${feedUrl}`],
+            ["i", `podcast:item:guid: ${itemGuid}`],
             ["author", author],
-            ["i", itemGuid],
             ["feed_title", feedTitle],
             ["item_title", itemTitle],
             ["img_src", imgSrc],

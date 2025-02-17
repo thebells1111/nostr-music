@@ -20,8 +20,9 @@
         kind: 33334,
         created_at: Math.floor(Date.now() / 1000),
         tags: [
-          ["g", feedGuid],
-          ["u", feedUrl],
+          ["i", `podcast:guid: ${feedGuid}`],
+          ["i", `url: ${feedUrl}`],
+          ["i", `podcast:item:guid: ${itemGuid}`],
           ["author", author],
           ["feed_title", feed.title],
           ["img_src", imgSrc],
