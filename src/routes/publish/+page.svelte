@@ -1,4 +1,5 @@
 <script>
+  import poolFetchById from "$lib/functions/poolFetchById";
   let album = {
     author: "",
     title: "",
@@ -48,6 +49,17 @@
     console.log(invoice);
   }
 
+  async function createSignature() {
+    let sig = await window.nostr.signEvent({
+      created_at: Math.ceil(Date.now() / 1000),
+      content: "",
+      kind: 33333,
+      tags: [["hash", "998b5afa31e53f240f769330f14e461e88954c50"]],
+    });
+
+    console.log(sig);
+  }
+
   async function verifyCredits() {
     // Prompt user to sign auth event requesting account info
     const requestAccount = await window.nostr.signEvent({
@@ -71,6 +83,7 @@
   }
 </script>
 
+<button on:click={createSignature}>Sign</button>
 <button on:click={fetchStorage}>Get Storage</button>
 <div>
   <input placeholder="Band Name" bind:value={album.author} />
@@ -90,3 +103,5 @@
     <textarea placheholder="Track Description" bind:value={track.description} />
   </div>
 {/each}
+
+<button on:click={poolFetchById}>Fetch</button>

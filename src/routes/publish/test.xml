@@ -1,0 +1,48 @@
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+    xmlns:podcast="https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md"
+    xmlns:media="http://search.yahoo.com/mrss/" version="2.0" endcoding="UTF-8">
+    <channel>
+        <podcast:auth protocol="nostr">
+<![CDATA[{
+    "created_at": 1739991573,
+    "content": "",
+    "kind": 33333,
+    "tags": [
+        [
+            "hash",
+            "998b5afa31e53f240f769330f14e461e88954c50"
+        ]
+    ],
+    "pubkey": "dfd69dbcccab6613877192be593d6cf6df0586db1a52fdbcaaaf78aba1c25b88",
+    "id": "976ef1b9fc4ef302f8e036b8097b5d56923b7cc683a00594a90e1dc5bab632dc",
+    "sig": "664b94c25841c99e929ec601ad83be0825c7c3a6f1428c394dc4023a595a97c105f073d36e1e2cc8f52d9605be86a117aba409d13aed01b45a3c981e4ea1b123"
+}]]>
+        </podcast:auth>
+        <podcast:npub>npub1mltfm0xv4dnp8pm3j2l9j0tv7m0stpkmrff0m0924au2hgwztwyqj9pdyu</podcast:npub>
+        <title>
+<![CDATA[ So, ya'll wanted some playlists, huh? ]]>
+        </title>
+        <description>This is a demonstration of sharable playlists courtesy of LN Beats. Available
+            in all podcasting apps that support the medium=musicL tag.</description>
+        <itunes:image href="https://lnbeats.b-cdn.net/playlist600x600.png" />
+        <link>https://lnbeats.com/album/eeeb0e31-f3da-54f2-909f-4fd640c684cc</link>
+        <generator>LN Beats</generator>
+        <podcast:value type="lightning" method="keysend">
+            <podcast:valueRecipient type="node" name="Music Side Project"
+                address="035ad2c954e264004986da2d9499e1732e5175e1dcef2453c921c6cdcc3536e9d8"
+                split="100" />
+        </podcast:value>
+        <podcast:medium>musicL</podcast:medium>
+        <podcast:guid>eeeb0e31-f3da-54f2-909f-4fd640c684cc</podcast:guid>
+        <podcast:remoteItem feedGuid="a71b097b-4cf0-5e74-b6a9-1271373bb396"
+            itemGuid="a45376c3-c8b3-4173-80c4-4cdfa266e0db" />
+        <podcast:remoteItem feedGuid="c3fb85f3-e45b-5927-b8b9-8aab074f3da3"
+            itemGuid="e33adc88-22fa-4e13-8496-891af91c51e6" />
+        <podcast:remoteItem feedGuid="a2d2e313-9cbd-5169-b89c-ab07b33ecc33"
+            itemGuid="d2346732-acc5-4256-afe5-0a0f3e670e6b" />
+        <itunes:owner>
+            <itunes:email>steven@getalby.com</itunes:email>
+            <itunes:name>steven@getalby.com</itunes:name>
+        </itunes:owner>
+    </channel>
+</rss>
